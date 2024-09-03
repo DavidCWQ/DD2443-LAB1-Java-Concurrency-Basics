@@ -7,25 +7,17 @@ public class MainA {
 	public static class Incrementer implements Runnable {
 		public void run() {
 			for (int i = 0; i < INCREMENT; i++) {
-				//MainA.incrementSharedCounter();
-				sharedCounter++;
-
+				MainA.sharedCounter++;
 			}
 		}
 	}
 
-	private synchronized static void incrementSharedCounter() {
-		MainA.sharedCounter++;
-	}
 	public static class Printer implements Runnable {
 		public void run() {
-			for (int i = 0; i < 1_000_00; i++) {
-				if (i % 10000 == 0) {
-					System.out.println(sharedCounter);
-				}
-			}
+				System.out.println(sharedCounter);
 		}
 	}
+
 	private static void run() {
 		sharedCounter = 0;
 		Thread incrementer  = new Thread(new Incrementer());
