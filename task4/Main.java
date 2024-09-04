@@ -61,7 +61,7 @@ public class Main {
 	public static void main(String[] args) {
 		// Create producer and consumer tasks
 		Producer producer = new Producer(1000);
-		Consumer consumer = new Consumer(2000);
+		Consumer consumer = new Consumer(250);
 
 		// Create producer and consumer threads
 		Thread producerThread = new Thread(producer);

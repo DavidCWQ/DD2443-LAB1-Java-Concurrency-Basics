@@ -23,7 +23,8 @@ public class CountingSemaphore {
 	public void s_wait() throws InterruptedException {
 		synchronized (lock) {
 			count--; // Decrement the semaphore count
-			while (count <= 0) {
+			// DEBUG: if 'count--' is the last step, then 'count <= 0"
+			while (count < 0) {
 				// If the count < 0, the thread will call wait(),
 				// releasing the lock and entering a waiting state.
 				lock.wait(); // Wait until a resource is available
