@@ -13,6 +13,10 @@ To compile and execute:
 javac MainA.java
 java  Main
 ```
+We are likely to observe inconsistent and unpredictable results due to non atomic operations.
+Multiple threads attempt to read, increment, and write back to the shared counter without synchronization. So threads can read the old value simultaneously and increment it, causing missed increments.
+We are likely to observe inconsistent and unpredictable results due to non atomic operations.
+Multiple threads attempt to read, increment, and write back to the shared counter without synchronization. So threads can read the old value simultaneously and increment it, causing missed increments.
 
 ### B. Synchronized Keyword
 Source files:
@@ -23,6 +27,8 @@ To compile and execute:
 javac MainB.java
 java  Main
 ```
+The final value of sharedCounter should be exactly 4,000,000.
+This is because the synchronized block ensures that only one thread can execute the critical section (the increment operation) at a time
 
 ### C. Synchronization Performance
 Source files:
