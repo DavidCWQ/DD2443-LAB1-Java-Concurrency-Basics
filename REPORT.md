@@ -99,6 +99,11 @@ To compile and execute:
 ```shell
 javac Buffer.java
 ```
+> The condition variables ensure that producers wait when the buffer is full and consumers wait when it's empty, while maintaining thread safety with the ReentrantLock.
+
+> The order of consumption is FIFO.
+
+> The implementation ensures that the producer will not proceed to add an item after being awakened if the closure happens while it was waiting.
 
 ### B. Program using Buffer Class
 Source files:
@@ -111,6 +116,8 @@ javac Main.java Buffer.java
 java  Main
 ```
 
+> This program ensures that the producer and consumer work concurrently on the shared buffer, with proper handling of the buffer's closure and thread termination.
+
 ## Task 4: Counting Semaphore
 
 ### A. Implementation
@@ -122,6 +129,10 @@ To compile and execute:
 javac CountingSemaphore.java
 ```
 
+> The semaphore’s count can be negative and does not have a minimum value constraint other than the practical constraint of how many threads can be waiting. The negative value represents the number of threads waiting for a resource, with count tracking the balance of available versus used resources.
+
+> Handle spurious wake-ups by using a loop to recheck the condition after being awakened, ensuring that it only proceeds when the condition is truly met.
+
 ### B. Program using Counting Semaphore
 Source files:
 - `task4/Main.java` (main file)
@@ -132,6 +143,12 @@ To compile and execute:
 javac Main.java CountingSemaphore.java
 java  Main
 ```
+
+> The program demonstrates the use of the semaphore with a producer thread that signals the semaphore and a consumer thread that waits for the semaphore.
+
+> The implementation provide options to adjust task durations of the producer and the consumer.
+
+> When the producer's task duration is set to 1000ms and the consumer's task duration to 250ms, the consumers will operate faster than the producer. This setup naturally results in the consumers frequently waiting for the producer to generate new items, as they will quickly consume all available resources. This configuration is typical in a producer-consumer scenario, where consumers must occasionally wait for production to catch up.
 
 ## Task 5: Dining Philosophers
 
