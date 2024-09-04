@@ -5,7 +5,10 @@ public class MainB {
 
 	public static class Incrementer implements Runnable {
 		private long completionTime;
+		private long startTime;
+
 		public void run() {
+			this.startTime = System.nanoTime();
 			done = false;
 			MainB.sharedCounter = 0;
 			for (int i = 0; i < INCREMENT; i++) {
@@ -18,24 +21,37 @@ public class MainB {
 		public long getCompletionTime() {
 			return completionTime;
 		}
+
+		public long getStartTime() {
+			return this.startTime;
+		}
 	}
 
 	public static class Printer implements Runnable {
 		private long notificationTime;
+		private boolean isQuiet;
 		public void run() {
 			while (!done) {}
 			notificationTime = System.nanoTime();
-			System.out.println(sharedCounter);
+			if (!isQuiet) {
+				System.out.println(sharedCounter);
+			}
 		}
 		public long getNotificationTime() {
 			return notificationTime;
 		}
+		public void setQuiet() {
+			this.isQuiet = true;
+		}
 	}
-	public static long run() {
+	public static void run(boolean isQuiet, long[] data) {
 		MainB.sharedCounter = 0;
 		done = false;
 		Incrementer incrementer = new Incrementer();
 		Printer printer = new Printer();
+		if (isQuiet) {
+			printer.setQuiet();
+		}
 		Thread workingThread  = new Thread(incrementer);
 		Thread waitingThread  = new Thread(printer);
 
@@ -48,10 +64,11 @@ public class MainB {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		return printer.getNotificationTime() - incrementer.getCompletionTime();
+		data[0] = printer.getNotificationTime()-incrementer.getCompletionTime();
+		data[1] = printer.getNotificationTime()-incrementer.getStartTime();
 	}
 
 	public static void main(String [] args) {
-		run();
+		run(false, new long[2]);
 	}
 }
