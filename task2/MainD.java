@@ -33,9 +33,9 @@ public class MainD {
 		MainD main = new MainD();
 		Data delayTime = new Data();
 		Data dataGuardedBlock = main.measuringPerformance(10000, 20000,  delayTime,true);
-		Data dataBuzyWainting = main.measuringPerformance(10000, 20000, delayTime, false);
 		System.out.println("Delay between completion of increments by the incrementingThread, and printingThreads receiving the notification");
 		System.out.println("Guarded block : average time " + delayTime.getAverage() + ", standart deviation " +delayTime.getStandardDeviation());
+		Data dataBuzyWainting = main.measuringPerformance(10000, 20000, delayTime, false);
 		System.out.println("Busy-waiting : average time " + delayTime.getAverage() + ", standart deviation " +delayTime.getStandardDeviation());
 		System.out.println();
 		System.out.println("Execution time");
