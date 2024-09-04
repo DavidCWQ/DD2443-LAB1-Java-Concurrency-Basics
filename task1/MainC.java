@@ -57,8 +57,8 @@ public class MainC {
 	}
 	public static void main(String [] args) {
 		MainC main = new MainC();
-		for (int i = 0; i < 5; i++) {
-			Data data = main.measuringPerformance(4, 1, 100);
+		for (int i = 0; i < 64; i++) {
+			Data data = main.measuringPerformance(4, 100, 100);
 			System.out.println("average time " + data.getAverage() + ", standart deviation " +data.getStandardDeviation());
 		}
 		System.out.println("Goodbye");

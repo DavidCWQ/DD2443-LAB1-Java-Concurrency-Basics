@@ -39,7 +39,16 @@ To compile and execute:
 javac MainC.java
 java  Main <N>
 ```
-> Where `N` is number of threads to execute with.
+
+> Let's analyze the performance.
+ 
+Description of the experimental machine (my local machine):
+
+-   Processor: Intel(R) Core(TM) i7-9850H CPU 2.60GHz x86 64-bit, 6 cores
+-   Memory: 15 GB
+-   System: Linux, DELL Precision-7540
+
+Sample of Y=100 times and X=100 warm-ups
 
 In figure 1, we see how the execution time scaled with the number of threads:
 
@@ -82,7 +91,7 @@ java  Main
 ```
 
 > This also works well.
-> Let's analyze the performance.
+
 
 ### D. Guarded Block Performance
 Source files:
@@ -93,6 +102,7 @@ To compile and execute:
 javac MainD.java
 java  Main
 ```
+> Let's analyze the performance.
 
 Description of the experimental machine:
 
