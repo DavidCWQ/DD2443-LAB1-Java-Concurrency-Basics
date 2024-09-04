@@ -94,6 +94,24 @@ javac MainD.java
 java  Main
 ```
 
+Description of the experimental machine:
+
+-   Processor: Intel(R) Core(TM) i7-9850H CPU 2.60GHz x86 64-bit, 6 cores
+-   Memory: 15 GB 
+-   System: Linux, DELL Precision-7540
+
+Sample of Y=20,000 times and X=10,000 warm-ups
+
+| Time (in ms)                  | Busy-waiting | Guarded Block |
+|-------------------------------|--------------|---------------|
+| Average execution time        | 28.69 ms     | 28.73 ms      |
+| Standart deviation exec time  | 16.14        | 15.99         |
+| Average delay time            | 11.89 ms     | 11,94 ms      |
+| Standart deviation delay time | 14.55        | 15.17         |
+
+
+>The measurement of the waiting delay between the two processes or the execution time is extremely similar between the busy-waiting receiver and the guarded block. However, the guarded block should be significantly better in terms of CPU load and, consequently, energy consumption.
+
 ## Task 3: Producer-Consumer Buffer using Condition Variables
 
 
@@ -150,7 +168,7 @@ To compile and execute:
 javac MainA.java
 java  Main
 ```
-
+> This implementation may lead to a deadlock situation because each philosopher attempts to acquire the left chopstick first, and then the right chopstick. If all philosophers pick up their left chopstick simultaneously, they will all wait indefinitely for the right chopstick, causing a deadlock.
 ### B. Solution Implementation
 Source files:
 - `task5/MainB.java` (main file)
