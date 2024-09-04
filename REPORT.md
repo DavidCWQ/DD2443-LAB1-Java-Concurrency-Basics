@@ -1,47 +1,59 @@
 # Lab 1 - Basic Concurrency in Java
+
 - Group 18
 - Simon Dussud and Wenqi Cao
 
 ## Task 1: Simple Synchronization
 
 ### A. Race Conditions
+
 Source files:
+
 - `task1/MainA.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainA.java
 java  Main
 ```
+
 We are likely to observe inconsistent and unpredictable results due to non atomic operations.
 Multiple threads attempt to read, increment, and write back to the shared counter without synchronization. So threads can read the old value simultaneously and increment it, causing missed increments.
 We are likely to observe inconsistent and unpredictable results due to non atomic operations.
 Multiple threads attempt to read, increment, and write back to the shared counter without synchronization. So threads can read the old value simultaneously and increment it, causing missed increments.
 
 ### B. Synchronized Keyword
+
 Source files:
+
 - `task1/MainB.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainB.java
 java  Main
 ```
+
 The final value of sharedCounter should be exactly 4,000,000.
 This is because the synchronized block ensures that only one thread can execute the critical section (the increment operation) at a time
 
 ### C. Synchronization Performance
+
 Source files:
+
 - `task1/MainC.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainC.java
 java  Main <N>
 ```
 
 > Let's analyze the performance.
- 
+
 Description of the experimental machine (my local machine):
 
 -   Processor: Intel(R) Core(TM) i7-9850H CPU 2.60GHz x86 64-bit, 6 cores
@@ -57,10 +69,13 @@ In figure 1, we see how the execution time scaled with the number of threads:
 ## Task 2: Guarded Blocks using wait()/notify()
 
 ### A. Asynchronous Sender-Receiver
+
 Source files:
+
 - `task2/MainA.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainA.java
 java  Main
@@ -69,10 +84,13 @@ java  Main
 > Since the print thread runs in parallel with the increment thread without synchronization, it may print a value between 0 and 1,000,000.
 
 ### B. Busy-waiting Receiver
+
 Source files:
+
 - `task2/MainB.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainB.java
 java  Main
@@ -81,10 +99,13 @@ java  Main
 > With the while loop to continuously check if 'done' is true, the program works fine and print 1,000,000
 
 ### C. Waiting with Guarded Block
+
 Source files:
+
 - `task2/MainC.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainC.java
 java  Main
@@ -94,26 +115,30 @@ java  Main
 
 
 ### D. Guarded Block Performance
+
 Source files:
+
 - `task2/MainD.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainD.java
 java  Main
 ```
+
 > Let's analyze the performance.
 
 Description of the experimental machine:
 
 -   Processor: Intel(R) Core(TM) i7-9850H CPU 2.60GHz x86 64-bit, 6 cores
--   Memory: 15 GB 
+-   Memory: 15 GB
 -   System: Linux, DELL Precision-7540
 
 Sample of Y=20,000 times and X=10,000 warm-ups
 
 | Time (in ms)                  | Busy-waiting | Guarded Block |
-|-------------------------------|--------------|---------------|
+| ----------------------------- | ------------ | ------------- |
 | Average execution time        | 28.69 ms     | 28.73 ms      |
 | Standart deviation exec time  | 16.14        | 15.99         |
 | Average delay time            | 11.89 ms     | 11,94 ms      |
@@ -126,13 +151,17 @@ Sample of Y=20,000 times and X=10,000 warm-ups
 
 
 ### A. Implementation
+
 Source files:
+
 - `task3/Buffer.java`
 
 To compile and execute:
+
 ```shell
 javac Buffer.java
 ```
+
 > The condition variables ensure that producers wait when the buffer is full and consumers wait when it's empty, while maintaining thread safety with the ReentrantLock.
 
 > The order of consumption is FIFO.
@@ -140,11 +169,14 @@ javac Buffer.java
 > The implementation ensures that the producer will not proceed to add an item after being awakened if the closure happens while it was waiting.
 
 ### B. Program using Buffer Class
+
 Source files:
+
 - `task3/Main.java` (main file)
 - `task3/Buffer.java`
 
 To compile and execute:
+
 ```shell
 javac Main.java Buffer.java
 java  Main
@@ -155,10 +187,13 @@ java  Main
 ## Task 4: Counting Semaphore
 
 ### A. Implementation
+
 Source files:
+
 - `task4/CountingSemaphore.java`
 
 To compile and execute:
+
 ```shell
 javac CountingSemaphore.java
 ```
@@ -168,11 +203,14 @@ javac CountingSemaphore.java
 > Handle spurious wake-ups by using a loop to recheck the condition after being awakened, ensuring that it only proceeds when the condition is truly met.
 
 ### B. Program using Counting Semaphore
+
 Source files:
+
 - `task4/Main.java` (main file)
 - `task4/CountingSemaphore.java`
 
 To compile and execute:
+
 ```shell
 javac Main.java CountingSemaphore.java
 java  Main
@@ -187,29 +225,36 @@ java  Main
 ## Task 5: Dining Philosophers
 
 ### A. Model the Dining Philosophers
+
 Source files:
+
 - `task5/MainA.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainA.java
 java  Main
 ```
+
 > This implementation may lead to a deadlock situation because each philosopher attempts to acquire the left chopstick first, and then the right chopstick. If all philosophers pick up their left chopstick simultaneously, they will all wait indefinitely for the right chopstick, causing a deadlock.
 > The more philosophers there are, the lower the probability of them getting blocked, because it would require all of them to request the lock at the same time.
 > The Java ThreadMXBean interface appears to work well for automatically detecting deadlocks and identifying their causes.
 
 ### B. Solution Implementation
+
 Source files:
+
 - `task5/MainB.java` (main file)
 
 To compile and execute:
+
 ```shell
 javac MainB.java
 java  Main
 ```
 
-We implemented solution 3. 
+We implemented solution 3.
 But we resolved this problem in three steps:
 
 First Solution:
