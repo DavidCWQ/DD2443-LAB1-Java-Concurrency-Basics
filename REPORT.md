@@ -186,6 +186,9 @@ javac MainA.java
 java  Main
 ```
 > This implementation may lead to a deadlock situation because each philosopher attempts to acquire the left chopstick first, and then the right chopstick. If all philosophers pick up their left chopstick simultaneously, they will all wait indefinitely for the right chopstick, causing a deadlock.
+> The more philosophers there are, the lower the probability of them getting blocked, because it would require all of them to request the lock at the same time.
+> The Java ThreadMXBean interface appears to work well for automatically detecting deadlocks and identifying their causes.
+
 ### B. Solution Implementation
 Source files:
 - `task5/MainB.java` (main file)
@@ -195,3 +198,25 @@ To compile and execute:
 javac MainB.java
 java  Main
 ```
+
+We implemented solution 3. 
+But we resolved this problem in three steps:
+
+First Solution:
+
+First, we considered a solution where each philosopher randomly chooses to pick up either their left or right chopstick first. Then, for the second chopstick, they wait for a certain timeout period. If the timeout expires, they release the first chopstick and return to the starting position, where they randomly decide again whether to pick up the left or right chopstick.
+We believe this solution is both deadlock-free and starvation-free because the probability of finding a second chopstick is non-zero, and the philosopher retries each time.
+However, we implemented the third solution, which is more concise.
+
+Second Solution:
+
+We manage a shared boolean array accessed by all the processes, indicating whether both chopsticks are simultaneously available or not.
+This solution is somewhat cheating because it introduces a new shared resource among all processes.
+
+Third Solution:
+
+The second solution led us to the third solution. This solution uses the tryLock() method from the API (instead of lock()), which allows attempting to pick up chopsticks without blocking indefinitely.
+If a philosopher fails to acquire both chopsticks, he releases any chopsticks he might have picked up and tries again later.
+A deadlock occurs if all processes simultaneously acquire and release their chopsticks in a synchronized manner.
+And this situation cannot persist indefinitely.
+So this solution is Deadlock-free and Starvation-free

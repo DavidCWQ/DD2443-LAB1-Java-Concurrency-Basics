@@ -75,6 +75,6 @@ public class MainA {
 		}
 	}
 	public static void main(String [] args) {
-			run(5);
+			run(7);
 	}
 }
