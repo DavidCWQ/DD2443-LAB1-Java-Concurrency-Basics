@@ -2,36 +2,47 @@ import java.util.ArrayList;
 
 public class MainD {
 
-	private Data measuringPerformance(int warmUpIterations, int measurementIterations, boolean guardedBlock) {
-		Data data = new Data();
+	private Data measuringPerformance(int warmUpIterations, int measurementIterations, Data delayTime,  boolean guardedBlock) {
+		Data executionTime = new Data();
+		long[] dataTime = new long[2];
 
 		// Warm up phase
 		for (int i = 0; i < warmUpIterations; i++) {
 			if (guardedBlock) {
-				MainC.run();
+				MainC.run(true, dataTime);
 			} else {
-				MainB.run();
+				MainB.run(true, dataTime);
 			}
-
 		}
 
 		// Measurement phase
 		for (int i = 0; i < measurementIterations; i++) {
 			if (guardedBlock) {
-				data.add(MainC.run());
+				MainC.run(true, dataTime);
+				delayTime.add(dataTime[0]);
+				executionTime.add(dataTime[1]);
 			} else {
-				data.add(MainC.run());
+				MainC.run(true, dataTime);
+				delayTime.add(dataTime[0]);
+				executionTime.add(dataTime[1]);
 			}
-
 		}
-		return data;
+		return executionTime;
 	}
 	public static void main(String [] args) {
 		MainD main = new MainD();
-			Data dataGuardedBlock = main.measuringPerformance(1000, 1000, true);
-			Data dataBuzyWainting = main.measuringPerformance(1000, 1000, false);
-			System.out.println("average time " + dataGuardedBlock.getAverage() + ", standart deviation " +dataGuardedBlock.getStandardDeviation());
-			System.out.println("average time " + dataBuzyWainting.getAverage() + ", standart deviation " +dataBuzyWainting.getStandardDeviation());
+		Data delayTime = new Data();
+		Data dataGuardedBlock = main.measuringPerformance(10000, 20000,  delayTime,true);
+		Data dataBuzyWainting = main.measuringPerformance(10000, 20000, delayTime, false);
+		System.out.println("Delay between completion of increments by the incrementingThread, and printingThreads receiving the notification");
+		System.out.println("Guarded block : average time " + delayTime.getAverage() + ", standart deviation " +delayTime.getStandardDeviation());
+		System.out.println("Busy-waiting : average time " + delayTime.getAverage() + ", standart deviation " +delayTime.getStandardDeviation());
+		System.out.println();
+		System.out.println("Execution time");
+		System.out.println("Guarded block : average time " + dataGuardedBlock.getAverage() + ", standart deviation " +dataGuardedBlock.getStandardDeviation());
+		System.out.println("Busy-waiting : average time " + dataBuzyWainting.getAverage() + ", standart deviation " +dataBuzyWainting.getStandardDeviation());
+
+
 	}
 }
 class Data extends ArrayList<Long> {
