@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainC {
@@ -55,11 +57,19 @@ public class MainC {
 		}
 		return data;
 	}
-	public static void main(String [] args) {
+	public static void main(String [] args) throws IOException {
+		FileWriter writer = new FileWriter("output.txt");
 		MainC main = new MainC();
 		for (int i = 0; i < 64; i++) {
-			Data data = main.measuringPerformance(4, 100, 100);
-			System.out.println("average time " + data.getAverage() + ", standart deviation " +data.getStandardDeviation());
+			Data data = main.measuringPerformance(i+1, 20, 50);
+
+			double x = data.getAverage()/1000000;
+			double y = data.getStandardDeviation()/1000000;
+			// write the string to the file
+			writer.write("" + x + ";" + y + "\n");
+			writer.flush();
+			// close the writer
+
 		}
 		System.out.println("Goodbye");
 	}
