@@ -1,3 +1,8 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 # Lab 1 - Basic Concurrency in Java
 
 - Group 18
@@ -64,7 +69,7 @@ Sample of Y=100 times and X=100 warm-ups
 
 In figure 1, we see how the execution time scaled with the number of threads:
 
-![My plot for task 1c](data/task2c.png)
+![My plot for task 1c](data/task1c.png)
 
 ## Task 2: Guarded Blocks using wait()/notify()
 
